@@ -1,24 +1,11 @@
 #!/usr/bin/env bash
 
-set -e
-set -o pipefail
-
 url=https://releases.hashicorp.com/packer/
 
-ruby -rubygems -ropen-uri <<SCRIPT
-begin
-  response = open("${url}").read
-  puts response.
-    each_line.
-    map {|l| l =~ %r{packer/([0-9.]+)/} ? Regexp.last_match[1] : nil }.
-    compact.
-    map { |version| Gem::Version.new(version) }.
-    sort.
-    join(" ")
+# stolen from https://github.com/rbenv/ruby-build/pull/631/files#diff-fdcfb8a18714b33b07529b7d02b54f1dR942
+function sort_versions() {
+  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' | \
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+}
 
-rescue StandardError => err
-  warn "Could not fetch list of packer versions"
-  warn "Response:\n#{response}"
-  raise err
-end
-SCRIPT
+curl --silent $url  | grep -oE 'packer/[0-9\.]+'  | uniq | sed 's|packer/||' | sort_versions
