@@ -1,0 +1,13 @@
+language: c
+before_script:
+  - git clone https://github.com/asdf-vm/asdf.git asdf
+  - . asdf/asdf.sh
+script:
+  - bin/list-all
+  - asdf plugin-add packer ./
+  - asdf list-all packer
+  - asdf plugin-test packer ./ 'packer --version'
+
+os:
+  - linux
+  - osx

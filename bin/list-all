@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+url=https://releases.hashicorp.com/packer/
+
+ruby -rubygems -ropen-uri <<SCRIPT
+begin
+  response = open("${url}").read
+  puts response.
+    each_line.
+    map {|l| l =~ %r{packer/([0-9.]+)/} ? Regexp.last_match[1] : nil }.
+    compact.
+    map { |version| Gem::Version.new(version) }.
+    sort.
+    join(" ")
+
+rescue StandardError => err
+  warn "Could not fetch list of packer versions"
+  warn "Response:\n#{response}"
+  raise err
+end
+SCRIPT
