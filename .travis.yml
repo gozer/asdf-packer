@@ -6,7 +6,7 @@ script:
   - bin/list-all
   - asdf plugin-add packer ./
   - asdf list-all packer
-  - asdf plugin-test packer ./ 'packer --version'
+  - asdf plugin-test packer ./ 'packer version'
 
 os:
   - linux
