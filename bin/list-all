@@ -2,6 +2,7 @@
 
 url=https://releases.hashicorp.com/packer/
 
+os=$(uname -s)
 if [ "Linux" == "$os" ]; then
   REVERSE="tac"
 else
