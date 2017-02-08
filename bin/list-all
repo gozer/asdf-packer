@@ -2,6 +2,12 @@
 
 url=https://releases.hashicorp.com/packer/
 
-versions=$(curl -s $url  | grep -oE 'packer/[0-9\.]+'  | uniq | sed 's|packer/||' | tac)
+if [ "Linux" == "$os" ]; then
+  REVERSE="tac"
+else
+  REVERSE="tail -r"
+fi
+
+versions=$(curl -s $url  | grep -oE 'packer/[0-9\.]+'  | uniq | sed 's|packer/||' | $REVERSE)
 
 echo $versions
