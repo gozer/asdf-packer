@@ -19,7 +19,7 @@ install_packer() {
   local download_path="$tmp_dir/$(get_filename version)"
 
   echo "Downloading packer from ${download_url}"
-  curl "$download_url" -o "$download_path"
+  curl -s "$download_url" -o "$download_path"
 
   echo "Creating bin directory"
   mkdir -p "${bin_install_path}"
