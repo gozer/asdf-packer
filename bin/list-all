@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
 
-url=https://releases.hashicorp.com/packer/
+set -e
+set -o pipefail
 
-os=$(uname -s)
-if [ "Linux" == "$os" ]; then
-  REVERSE="tac"
-else
-  REVERSE="tail -r"
-fi
-
-versions=$(curl -s $url  | grep -oE 'packer/[0-9\.]+'  | uniq | sed 's|packer/||' | $REVERSE)
-
-echo $versions
+curl -s https://releases.hashicorp.com/packer/ \
+  | grep -o 'packer_[0-9]\+\.[0-9]\+\.[0-9]\+\(-[a-z]\+[0-9]*\)\?' \
+  | tr -d '\n' | sed 's/packer_/ /g; s/^ //'

@@ -1,10 +1,4 @@
 language: c
-addons:
-  apt:
-    sources:
-      - debian-sid
-    packages:
-      - libssl1.0.0
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git asdf
   - . asdf/asdf.sh
@@ -13,7 +7,6 @@ script:
   - asdf plugin-add packer ./
   - asdf list-all packer
   - asdf plugin-test packer ./ 'packer version'
-
 os:
   - linux
   - osx
